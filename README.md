@@ -26,7 +26,7 @@ ASTE-Data-V2 is originally released by the paper "Position-Aware Tagging for Asp
 - numpy
 - spacy
 - transformers (https://huggingface.co/transformers/installation.html)
-- tokenizations (https://github.com/explosion/tokenizations)
+- spacy_alignments (https://github.com/explosion/spacy-alignments) for ease of use on Google Colab / Kaggle Notebook
 
 
 ## Run
