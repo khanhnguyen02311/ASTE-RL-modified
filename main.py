@@ -24,7 +24,6 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
         # training
         batchcnt = (len(train_data) - 1) // args.batchsize + 1
         for b in range(batchcnt):
-            torch.cuda.empty_cache()
             start = time.time()
             data = train_data[b * args.batchsize : (b+1) * args.batchsize]
             acc, cnt, tot = train(b, model, data, sampleround, \
@@ -33,6 +32,7 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
             # print time per batch
             if b % args.print_per_batch == 0:
                 print("Train batch", b, ": F1=", trainF1, ", time=", (time.time() - start))
+            torch.cuda.empty_cache()
 
         with torch.no_grad():
             # validation
