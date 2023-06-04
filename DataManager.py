@@ -3,7 +3,7 @@ import ast
 import spacy
 from spacy.tokens import Doc
 from transformers import BertTokenizer
-import tokenizations
+import spacy_alignments as tokenizations
 import os
 
 

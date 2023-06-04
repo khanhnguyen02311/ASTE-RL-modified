@@ -109,7 +109,7 @@ if __name__ == "__main__":
             json.dump(vars(args), f)
             f.close()
 
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = Model(args.lr, args.dim, args.statedim, dm.sent_count, args.dropout, all_pos_tags)
     model.to(device)
     if args.start != '':
