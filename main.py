@@ -24,6 +24,7 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
         # training
         batchcnt = (len(train_data) - 1) // args.batchsize + 1
         for b in range(batchcnt):
+            torch.cuda.empty_cache()
             start = time.time()
             data = train_data[b * args.batchsize : (b+1) * args.batchsize]
             acc, cnt, tot = train(b, model, data, sampleround, \
