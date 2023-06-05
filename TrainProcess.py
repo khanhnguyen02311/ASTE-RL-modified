@@ -138,7 +138,7 @@ def worker(model, rank, dataQueue, resultQueue, freeProcess, lock, flock, lr, se
         acc, cnt, tot, loss = workProcess(model, datas, sample_round, mode, device, sentiments, test)
         resultQueue.put((acc, cnt, tot, dataID, rank, loss))
         # testing
-        del datas, sample_round, mode, dataID, device, sentiments, test
+        del datas, sample_round, dataID, device, sentiments, test
         if not "test" in mode:
             lock.acquire()
             optimizer.step()
