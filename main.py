@@ -124,6 +124,7 @@ if __name__ == "__main__":
     try:
         mp.set_start_method('spawn')
     except RuntimeError:
+        print("Set start method unsuccessful. Skipping.")
         pass
     
     # start PyTorch multiprocessing

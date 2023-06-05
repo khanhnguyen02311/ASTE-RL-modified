@@ -137,6 +137,8 @@ def worker(model, rank, dataQueue, resultQueue, freeProcess, lock, flock, lr, se
         model.zero_grad()
         acc, cnt, tot, loss = workProcess(model, datas, sample_round, mode, device, sentiments, test)
         resultQueue.put((acc, cnt, tot, dataID, rank, loss))
+        # testing
+        del datas, sentiments, acc, cnt, tot, loss
         if not "test" in mode:
             lock.acquire()
             optimizer.step()
@@ -157,6 +159,8 @@ def train(dataID, model, datas, sample_round, mode, dataQueue, resultQueue, free
         endPos = ((r+1)*dataPerProcess if r+1 != numprocess else len(datas))
         data = datas[r*dataPerProcess: endPos]
         dataQueue.put((data, sample_round, mode, dataID, device, sentiments, test))
+        # testing
+        del data, endPos
     lock.acquire()
     try:
         for r in range(numprocess):
