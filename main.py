@@ -30,8 +30,9 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
                     mode, dataQueue, resultQueue, freeProcess, lock, args.numprocess, device, sentiments, args.test)
             trainF1 = calcF1(acc, cnt, tot)
             # print time per batch
+            print(f"{b}-", end="")
             if b % args.print_per_batch == 0:
-                print("Train batch", b, ": F1=", trainF1, ", time=", (time.time() - start))
+                print("\nTrain batch", b, ": F1=", trainF1, ", time=", (time.time() - start))
 
         with torch.no_grad():
             # validation
