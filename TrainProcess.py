@@ -138,7 +138,7 @@ def worker(model, rank, dataQueue, resultQueue, freeProcess, lock, flock, lr, se
         acc, cnt, tot, loss = workProcess(model, datas, sample_round, mode, device, sentiments, test)
         resultQueue.put((acc, cnt, tot, dataID, rank, loss))
         # testing
-        del datas, sentiments, acc, cnt, tot, loss
+        del datas, sample_round, mode, dataID, device, sentiments, test
         if not "test" in mode:
             lock.acquire()
             optimizer.step()
@@ -174,6 +174,9 @@ def train(dataID, model, datas, sample_round, mode, dataQueue, resultQueue, free
             cnt += item[1]
             tot += item[2]
             loss += item[5]
+            # testing
+            del item
+            
     except queue.Empty:
         print("The result of some process missed...")
         print(freeProcess.value)
