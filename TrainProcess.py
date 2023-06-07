@@ -134,7 +134,7 @@ def worker(model, rank, dataQueue, resultQueue, freeProcess, lock, flock, lr, se
         flock.acquire()
         freeProcess.value -= 1
         flock.release()
-        model.zero_grad()
+        model.zero_grad(set_to_none=True)
         acc, cnt, tot, loss = workProcess(model, datas, sample_round, mode, device, sentiments, test)
         resultQueue.put((acc, cnt, tot, dataID, rank, loss))
         if not "test" in mode:

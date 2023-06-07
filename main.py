@@ -33,6 +33,9 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
             # print(f"{b}-", end="")
             if b % args.print_per_batch == 0:
                 print("Train batch", b, ": F1=", trainF1, ", time=", (time.time() - start))
+                
+        # empty cache
+        torch.cuda.empty_cache()
 
         with torch.no_grad():
             # validation

@@ -73,14 +73,14 @@ class Model(nn.Module):
             return torch.argmax(prob, 1)
         elif preoptions is not None:
             # pre-training
-            return torch.LongTensor(1, ).fill_(preoptions[position]).to(device)
+            return torch.IntTensor(1, ).fill_(preoptions[position]).to(device)
         else:
             # RL training
             return torch.squeeze(torch.multinomial(prob, 1), dim=0).to(device)
 
     def forward(self, mode, pos_tags, sentext, preoptions=None, pre_aspect_actions=None, pre_opinion_actions=None, device=torch.device("cpu"), sentiments=None):
         # POS tag vectors
-        posin = torch.LongTensor(pos_tags).to(device)
+        posin = torch.IntTensor(pos_tags).to(device)
         posvs = self.posvector(posin)
         posvs = torch.unsqueeze(posvs, dim=1)
         top_action, top_actprob = [], []
@@ -105,8 +105,8 @@ class Model(nn.Module):
         #------------------------------------------------------------------
         # First Layer
         mem = torch.FloatTensor(1, self.statedim, ).fill_(0).to(device)
-        action = torch.LongTensor(1, ).fill_(0).to(device)
-        sent_action = torch.LongTensor(1, ).fill_(0).to(device)
+        action = torch.IntTensor(1, ).fill_(0).to(device)
+        sent_action = torch.IntTensor(1, ).fill_(0).to(device)
         for x in range(sentence_len):
             mem, prob = self.topModel(posvs[x], wordintop[x],\
                     self.sentimentvector(sent_action), mem, training, self.dropout)
@@ -140,7 +140,7 @@ class Model(nn.Module):
                 sentiment_indicator_token = self.tokenizer.convert_ids_to_tokens(right_input['input_ids'][0,1:-1][x].item())
 
                 # BERT encoding for low-level opinion process
-                actionb = torch.LongTensor(1, ).fill_(0).to(device)
+                actionb = torch.IntTensor(1, ).fill_(0).to(device)
                 actions, actprobs = [], []
                 bot_left_sentence = "What is the opinion span for the {} sentiment indicated at {}?".format(sentiment_text, sentiment_indicator_token)
                 left_input = self.tokenizer(bot_left_sentence, return_tensors='pt').to(device)
@@ -166,7 +166,7 @@ class Model(nn.Module):
                 bot_opinion_actprob.append(actprobs)
 
                 # BERT encoding for low-level aspect process
-                actionb = torch.LongTensor(1, ).fill_(0).to(device)
+                actionb = torch.IntTensor(1, ).fill_(0).to(device)
                 actions, actprobs = [], []
                 bot_left_sentence = "What is the aspect span for the {} sentiment indicated at {}?".format(sentiment_text, sentiment_indicator_token)
                 left_input = self.tokenizer(bot_left_sentence, return_tensors='pt').to(device)
