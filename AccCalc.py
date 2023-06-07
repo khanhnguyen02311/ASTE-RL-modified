@@ -21,7 +21,7 @@ def calc_acc(top_action, bot_aspect_action, bot_opinion_action, gold_labels, mod
         gold_labels (list): List of dictionaries of ground truth labels.
         mode (list): List of experiment modes.
     """
-    acc, cnt, tot = 0, 0, len(gold_labels)
+    acc, cnt, tot = 0., 0., float(len(gold_labels))
     used = [0 for i in range(len(top_action))]
     for label in gold_labels:
         tp, aspect_tags, opinion_tags = label['type'], label['aspect_tags'], label['opinion_tags']

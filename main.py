@@ -37,7 +37,7 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
         with torch.no_grad():
             # validation
             batchcnt = (len(dev_data) - 1) // args.batchsize_test + 1
-            acc, cnt, tot = 0, 0, 0
+            acc, cnt, tot = 0., 0., 0.
             for b in range(batchcnt):
                 data = dev_data[b * args.batchsize_test : (b+1) * args.batchsize_test]
                 acc_, cnt_, tot_ = test(b, model, data, mode, \
@@ -49,7 +49,7 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
 
             # testing
             batchcnt = (len(test_data) - 1) // args.batchsize_test + 1
-            acc, cnt, tot = 0, 0, 0
+            acc, cnt, tot = 0., 0., 0.
             for b in range(batchcnt):
                 data = test_data[b * args.batchsize_test : (b+1) * args.batchsize_test]
                 acc_, cnt_, tot_ = test(b, model, data, mode, \
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     # start work
     if args.test:
         batchcnt = (len(test_data) - 1) // args.batchsize_test + 1
-        acc, cnt, tot = 0, 0, 0
+        acc, cnt, tot = 0., 0., 0.
         for b in range(batchcnt):
             data = test_data[b * args.batchsize_test : (b+1) * args.batchsize_test]
             acc_, cnt_, tot_ = test(b, model, data, ["RE", "NER"], \

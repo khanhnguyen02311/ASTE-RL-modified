@@ -9,7 +9,7 @@ def workProcess(model, datas, sample_round, mode, device, sentiments, test):
     """
     Get model outputs and train model.
     """
-    acc, cnt, tot = 0, 0, 0
+    acc, cnt, tot = 0., 0., 0.
     loss = .0
     for data in datas:
         top_actions, top_actprobs, bot_aspect_actions, bot_aspect_actprobs, bot_opinion_actions, bot_opinion_actprobs = [], [], [], [], [], []
@@ -118,7 +118,7 @@ def workProcess(model, datas, sample_round, mode, device, sentiments, test):
             print(data['sentext'], '====>', str(all_preds))
 
     if len(datas) == 0:
-        return 0, 0, 0, 0
+        return 0., 0., 0., 0.
     return acc, cnt, tot, loss / len(datas)
 
 
@@ -137,12 +137,12 @@ def worker(model, rank, dataQueue, resultQueue, freeProcess, lock, flock, lr, se
         model.zero_grad()
         acc, cnt, tot, loss = workProcess(model, datas, sample_round, mode, device, sentiments, test)
         resultQueue.put((acc, cnt, tot, dataID, rank, loss))
-        # testing
-        del datas, sample_round, dataID, device, sentiments, test
         if not "test" in mode:
             lock.acquire()
             optimizer.step()
             lock.release()
+        # clear old data
+        del datas, sample_round, mode, dataID, device, sentiments, test
         flock.acquire()
         freeProcess.value += 1
         flock.release()
@@ -153,7 +153,7 @@ def train(dataID, model, datas, sample_round, mode, dataQueue, resultQueue, free
     dataPerProcess = len(datas) // numprocess
     while freeProcess.value != numprocess:
         pass
-    acc, cnt, tot = 0, 0, 0
+    acc, cnt, tot = 0., 0., 0.
     loss = .0
     for r in range(numprocess):
         endPos = ((r+1)*dataPerProcess if r+1 != numprocess else len(datas))

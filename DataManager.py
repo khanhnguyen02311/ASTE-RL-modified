@@ -23,7 +23,7 @@ class DataManager:
         # POS tagger
         nlp = spacy.load("en_core_web_sm")
         nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
-        # BERT tokeniser
+        # BERT tokenizer
         bert_tokenizer = BertTokenizer.from_pretrained("bert-large-uncased")
 
         # process data
