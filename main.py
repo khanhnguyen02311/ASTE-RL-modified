@@ -123,6 +123,8 @@ if __name__ == "__main__":
     model.to(device)
     if args.start != '':
         # if pretrained model exists
+        # logging
+        print("----main.py: Start:", torch.cuda.memory_allocated(device))
         pretrain_model = torch.load(args.start, map_location="cpu")
         model_dict = model.state_dict()
         pretrained_dict = pretrain_model.state_dict() 
@@ -130,6 +132,8 @@ if __name__ == "__main__":
         model_dict.update(pretrained_dict) 
         model.load_state_dict(model_dict) 
         del pretrain_model
+        # logging
+        print("----main.py: After model loaded:", torch.cuda.memory_allocated(device))
     model.share_memory()
     try:
         mp.set_start_method('spawn')

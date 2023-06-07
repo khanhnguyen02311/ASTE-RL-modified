@@ -1,4 +1,5 @@
 import time
+import torch
 import torch.optim as optim
 import queue
 from AccCalc import calc_acc, rule_actions
@@ -41,11 +42,17 @@ def workProcess(model, datas, sample_round, mode, device, sentiments, test):
                 acc += acc1
                 tot += tot1
                 cnt += cnt1
+                
+        # logging
+        print("----TrainProcess.py: After forward pass:", torch.cuda.memory_allocated(device))
             
         # training optimisation
         if "test" not in mode:
             loss += optimize_round(model, top_actions, top_actprobs, bot_aspect_actions,\
                     bot_aspect_actprobs, bot_opinion_actions, bot_opinion_actprobs, data['triplets'], mode, device)
+            # logging
+            print("----TrainProcess.py: After backward pass:", torch.cuda.memory_allocated(device))
+    
         # print for inference/testing
         elif test:
             all_preds = []
@@ -140,6 +147,8 @@ def worker(model, rank, dataQueue, resultQueue, freeProcess, lock, flock, lr, se
         if not "test" in mode:
             lock.acquire()
             optimizer.step()
+            # logging
+            print("----TrainProcess.py: After optimizer step:", torch.cuda.memory_allocated(device))
             lock.release()
         # clear old data
         del datas, sample_round, mode, dataID, device, sentiments, test
