@@ -121,7 +121,7 @@ if __name__ == "__main__":
     model.to(device)
     if args.start != '':
         # if pretrained model exists
-        pretrain_model = torch.load(args.start, map_location='cpu') 
+        pretrain_model = torch.load(args.start, map_location=device)
         model_dict = model.state_dict()
         pretrained_dict = pretrain_model.state_dict() 
         pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict} 
