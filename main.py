@@ -32,7 +32,7 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
             # print time per batch
             # print(f"{b}-", end="")
             if b % args.print_per_batch == 0:
-                print("\nTrain batch", b, ": F1=", trainF1, ", time=", (time.time() - start))
+                print("Train batch", b, ": F1=", trainF1, ", time=", (time.time() - start))
 
         with torch.no_grad():
             # validation
@@ -75,6 +75,9 @@ def work(mode, train_data, test_data, dev_data, model, args, sampleround, epoch,
 
 
 if __name__ == "__main__":
+    # Pytorch config
+    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:128"
+    
     # get args
     argv = sys.argv[1:]
     parser = Parser().getParser()
