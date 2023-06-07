@@ -119,12 +119,12 @@ if __name__ == "__main__":
             f.close()
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    # logging
+    print("----main.py: Start:", torch.cuda.memory_allocated(device))
     model = Model(args.lr, args.dim, args.statedim, dm.sent_count, args.dropout, all_pos_tags)
     model.to(device)
     if args.start != '':
         # if pretrained model exists
-        # logging
-        print("----main.py: Start:", torch.cuda.memory_allocated(device))
         pretrain_model = torch.load(args.start, map_location="cpu")
         model_dict = model.state_dict()
         pretrained_dict = pretrain_model.state_dict() 
