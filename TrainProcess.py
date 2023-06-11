@@ -44,7 +44,7 @@ def workProcess(model, datas, sample_round, mode, device, sentiments, test):
                 cnt += cnt1
                 
         # logging
-        print("----TrainProcess.py: After forward pass:", torch.cuda.memory_allocated(device))
+        # print("----TrainProcess.py: After forward pass:", torch.cuda.memory_allocated(device))
             
         # training optimisation
         if "test" not in mode:
@@ -148,7 +148,7 @@ def worker(model, rank, dataQueue, resultQueue, freeProcess, lock, flock, lr, se
             lock.acquire()
             optimizer.step()
             # logging
-            print("----TrainProcess.py: After optimizer step:", torch.cuda.memory_allocated(device))
+            # print("----TrainProcess.py: After optimizer step:", torch.cuda.memory_allocated(device))
             lock.release()
         # clear old data
         del datas, sample_round, mode, dataID, device, sentiments, test
